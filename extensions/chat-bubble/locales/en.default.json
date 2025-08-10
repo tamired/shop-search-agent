@@ -1,8 +1,0 @@
-{
-  "chat": {
-    "title": "Store Assistant",
-    "inputPlaceholder": "Type your message here...",
-    "sendButton": "Send",
-    "closeButton": "Close"
-  }
-}

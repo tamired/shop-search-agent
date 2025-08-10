@@ -1,0 +1,24 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "7cf0dabf2ce146f273b4221e917dcc84"
+name = "shop-chat-agent"
+handle = "shop-chat-agent-175"
+application_url = "https://api-open-plain-pins.trycloudflare.com"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
+
+[webhooks]
+api_version = "2025-04"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "customer_read_customers,customer_read_orders,customer_read_store_credit_account_transactions,customer_read_store_credit_accounts,unauthenticated_read_product_listings"
+
+[auth]
+redirect_urls = ["https://api-open-plain-pins.trycloudflare.com/auth/callback", "https://api-open-plain-pins.trycloudflare.com/auth/shopify/callback", "https://api-open-plain-pins.trycloudflare.com/api/auth/callback"]
+
+[pos]
+embedded = false

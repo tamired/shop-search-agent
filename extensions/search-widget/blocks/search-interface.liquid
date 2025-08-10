@@ -1,0 +1,202 @@
+{{ 'search-widget.css' | asset_url | stylesheet_tag }}
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<div class="search-widget-container">
+  <!-- Search Widget Button (Minimal State) -->
+  <div class="search-widget-bubble" style="background: linear-gradient(45deg, {{ block.settings.primary_color }}, {{ block.settings.secondary_color }});">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 12h8M12 8v8"/>
+      <circle cx="12" cy="12" r="10"/>
+    </svg>
+  </div>
+
+  <!-- Search Widget Interface (Expanded State) -->
+  <div class="search-widget-interface">
+    <div class="search-widget-header">
+      <div class="search-widget-header-content">
+        <div class="search-widget-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v6m0 6v6"/>
+            <path d="m15.5 3.5-1.5 1.5M10 10l-1.5-1.5m7 7-1.5-1.5M10 14l-1.5 1.5"/>
+          </svg>
+        </div>
+        <div class="search-widget-title">
+          <h3>{{ block.settings.widget_title }}</h3>
+          <p>{{ block.settings.widget_subtitle }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="search-widget-content">
+      <div class="search-widget-input-group">
+        <input 
+          type="text" 
+          class="search-widget-input" 
+          placeholder="{{ block.settings.search_placeholder }}"
+          autocomplete="off"
+        >
+        <button class="search-widget-button" style="background: linear-gradient(45deg, {{ block.settings.button_primary }}, {{ block.settings.button_secondary }});">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading Animation -->
+    <div class="search-widget-loading">
+      <div class="search-loading-animation">
+        <div class="search-loading-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v6m0 6v6"/>
+            <path d="m15.5 3.5-1.5 1.5M10 10l-1.5-1.5m7 7-1.5-1.5M10 14l-1.5 1.5"/>
+          </svg>
+          <div class="search-loading-ring"></div>
+        </div>
+        
+        <!-- Floating particles -->
+        <div class="search-loading-particles">
+          <div class="search-loading-particle"></div>
+          <div class="search-loading-particle"></div>
+          <div class="search-loading-particle"></div>
+          <div class="search-loading-particle"></div>
+          <div class="search-loading-particle"></div>
+          <div class="search-loading-particle"></div>
+        </div>
+      </div>
+      
+      <h3>{{ 'search.thinking' | t | default: 'AI is thinking...' }}</h3>
+      <p>{{ 'search.searching' | t | default: 'Searching through our products and knowledge base' }}</p>
+      
+      <!-- Bouncing dots -->
+      <div class="search-loading-dots">
+        <div class="search-loading-dot"></div>
+        <div class="search-loading-dot"></div>
+        <div class="search-loading-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Panel -->
+  <div class="search-results-panel">
+    <div class="search-results-header">
+      <h2>{{ 'search.results_title' | t | default: 'Search Results' }}</h2>
+      <button class="search-results-close">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="search-results-content">
+      <!-- Results will be populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'search-widget.js' | asset_url }}" defer></script>
+<script>
+  window.searchWidgetConfig = {
+    shopId: {{ shop.id }},
+    shopDomain: {{ shop.permanent_domain | json }},
+    // Use custom endpoint if provided, otherwise let JS determine automatically
+    customApiEndpoint: {% if block.settings.api_endpoint and block.settings.api_endpoint != blank %}{{ block.settings.api_endpoint | json }}{% else %}null{% endif %},
+    resultsPerPage: {{ block.settings.results_per_page | default: 4 }},
+    enableFAQ: {{ block.settings.enable_faq }},
+    enableProducts: {{ block.settings.enable_products }}
+  };
+</script>
+
+{% schema %}
+{
+  "name": "AI Search Widget",
+  "target": "body",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Widget Appearance"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Color",
+      "default": "#f472b6"
+    },
+    {
+      "type": "color",
+      "id": "secondary_color",
+      "label": "Secondary Color",
+      "default": "#22d3ee"
+    },
+    {
+      "type": "color",
+      "id": "button_primary",
+      "label": "Button Primary Color",
+      "default": "#fb923c"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary",
+      "label": "Button Secondary Color",
+      "default": "#a855f7"
+    },
+    {
+      "type": "header",
+      "content": "Widget Content"
+    },
+    {
+      "type": "text",
+      "id": "widget_title",
+      "label": "Widget Title",
+      "default": "AI Shopping Assistant"
+    },
+    {
+      "type": "text",
+      "id": "widget_subtitle",
+      "label": "Widget Subtitle",
+      "default": "How can I help you today?"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Placeholder",
+      "default": "Search products or ask a question..."
+    },
+    {
+      "type": "header",
+      "content": "Search Configuration"
+    },
+    {
+      "type": "url",
+      "id": "api_endpoint",
+      "label": "Custom Search API Endpoint",
+      "info": "Optional: Use a custom search API endpoint. Leave blank to use the built-in AI search."
+    },
+    {
+      "type": "range",
+      "id": "results_per_page",
+      "label": "Results Per Page",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_products",
+      "label": "Enable Product Search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_faq",
+      "label": "Enable FAQ Search",
+      "default": true
+    }
+  ]
+}
+{% endschema %} 

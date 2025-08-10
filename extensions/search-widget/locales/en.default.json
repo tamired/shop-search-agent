@@ -1,0 +1,10 @@
+{
+  "search": {
+    "searching": "Searching...",
+    "results_title": "Search Results",
+    "no_results": "No results found",
+    "try_different": "Try a different search term",
+    "error_message": "Something went wrong. Please try again.",
+    "close": "Close"
+  }
+} 
